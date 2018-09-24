@@ -1,0 +1,24 @@
+KVM快速还原虚拟机
+命令：
+  qemu-img create -f qcow2 -b $IMG_DIR/.$1  $IMG_DIR/$2 制作虚拟机的镜像文件
+  virsh dumpxml qcow2_filename > xx.xml                 制作虚拟机的xml配置文件
+  virsh define xx.xml                                   从xml文件创建一个域但不启动#virsh create 创建并[启动|连接控制台|...]
+  virsh destory xxx                                     停止一个域
+  virsh undefine xxx                                    取消定义一个域
+  virsh start    xxx                                    开始一个域
+  virsh shutdow  xxx                                    关闭一个域
+	virsh list --all                                      列出所有域
+  virsh dominfo xxx                                     查看虚拟机信息 
+步骤：
+  1 创建一个虚拟机并进行配置
+  2 生成镜像文件
+  3 从镜像文件生成XML配置文件
+  4 配置命令参数实现还原 启动 停止 删除 等功能
+  5 可增加功能 自动创建多台虚拟机
+XML 配置文件说明
+  <name>字段定义了域的名称
+  <source>字段定义了对应镜像文件的路径
+  <uuid> uuid,字母数字下划线组成，uuidgen 命令生成uuid 
+  #sed -i "/uuid/s/<uuid>.*<\/uuid>/<uuid>$(uuidgen)<\/uuid>/" /xx/xx.xml
+  <mac address> 设置MAC地址
+  ... ...
